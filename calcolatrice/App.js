@@ -43,6 +43,20 @@ const Calculator = () => {
   const handlePress = (value) => {
     if (value === '=') {
       try {
+      const parts = input.split(/([+\-*/])/); 
+      let result = parseFloat(parts[0]);
+
+      for (let i = 1; i < parts.length; i += 2) {
+        const operator = parts[i];
+        const nextNumber = parseFloat(parts[i + 1]);
+
+        if (operator === '+') result += nextNumber;
+        else if (operator === '-') result -= nextNumber;
+        else if (operator === '*') result *= nextNumber;
+        else if (operator === '/') result /= nextNumber;
+      }
+
+      setResult(result.toString());
 
       }
       catch (error) {
