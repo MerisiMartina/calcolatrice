@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'blue',
   },
-  calculator: {
+  calc: {
     backgroundColor: 'white',
     borderRadius: 10,
     padding: 20,
@@ -36,35 +36,51 @@ const styles = StyleSheet.create({
   },
 });
 
-const Calculator = () => {
+const Calc = () => {
   const [input, setInput] = useState('');
-  const [result, setResult] = useState('');
+  const [ris, setRis] = useState('');
 
   const handlePress = (value) => {
     if (value === '=') {
       try {
-      const parts = input.split(/([+\-*/])/); 
-      let result = parseFloat(parts[0]);
+      const membri = input.split(/([+\-*/])/); 
 
-      for (let i = 1; i < parts.length; i += 2) {
-        const operator = parts[i];
-        const nextNumber = parseFloat(parts[i + 1]);
+      for (let i = 1; i < membri.length; i+=2) {
+        const segno = membri[i];
+        const succ = parseFloat(membri[i + 1]);
+        const prec = parseFloat(membri[i - 1]);
+        let r;
 
-        if (operator === '+') result += nextNumber;
-        else if (operator === '-') result -= nextNumber;
-        else if (operator === '*') result *= nextNumber;
-        else if (operator === '/') result /= nextNumber;
+        if (segno === '*') {
+          r = prec * succ;
+          membri.splice(i - 1, 3, r.toString());
+          i -= 2;
+        } else if (segno === '/') {
+          r = prec / succ;
+          membri.splice(i - 1, 3, r.toString());
+          i -= 2;
+        }
+        
       }
 
-      setResult(result.toString());
+      let ris = parseFloat(membri[0]);
+
+      for (let i = 1; i < membri.length; i += 2) {
+        const segno = membri[i];
+        const succ = parseFloat(membri[i + 1]);
+        if (segno === '+') ris += succ;
+        else if (segno === '-') ris -= succ;
+      }
+
+      setRis(ris.toString());
 
       }
       catch (error) {
-        setResult('Error');
+        setRis('Error');
       }
     } else if (value === 'C') {
       setInput('');
-      setResult('');
+      setRis('');
     }
     else {
       setInput((prev) => prev + value);
@@ -73,9 +89,9 @@ const Calculator = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.calculator}>
+      <View style={styles.calc}>
         <Text>Calcolatrice</Text>
-        <TextInput style={styles.input} editable={false} placeholder="0" value={result || input} />
+        <TextInput style={styles.input} editable={false} placeholder="0" value={ris || input} />
         
         <View style={styles.row}>
           <Pressable style={styles.button} onPress={() => handlePress('1')} >
@@ -158,4 +174,4 @@ const Calculator = () => {
   );
 };
 
-export default Calculator;
+export default Calc;
