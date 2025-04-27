@@ -23,9 +23,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   row: {
+    marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
   },
   button: {
     backgroundColor: 'lightgray',
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
 const Calc = () => {
   const [input, setInput] = useState('');
   const [ris, setRis] = useState('');
+  const [memory, setMemory] = useState(0);
 
   const handlePress = (value) => {
     if (value === '=') {
@@ -81,8 +82,16 @@ const Calc = () => {
     } else if (value === 'C') {
       setInput('');
       setRis('');
-    }
-    else {
+    } else if (value === 'MS') {
+      setMemory(parseFloat(ris || input) || 0);
+    } else if (value === 'MR') {
+      setInput(memory.toString());
+      setRis('');
+    } else if (value === 'M+') {
+      setMemory(prev => prev + (parseFloat(ris || input) || 0));
+    } else if (value === 'M-') {
+      setMemory(prev => prev - (parseFloat(ris || input) || 0));
+    } else {
       setInput((prev) => prev + value);
     }
   }
@@ -165,6 +174,12 @@ const Calc = () => {
           </Pressable>
           <Pressable style={styles.button} onPress={() => handlePress('MR')} >
             <Text style={{ color: 'black' }}>MR</Text>
+          </Pressable>
+        </View>
+
+        <View style={styles.row}>
+          <Pressable style={styles.button} onPress={() => handlePress('MS')} >
+            <Text style={{ color: 'black' }}>MS</Text>
           </Pressable>
         </View>
         
