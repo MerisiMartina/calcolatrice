@@ -91,8 +91,15 @@ const Calc = () => {
       setMemory(prev => prev + (parseFloat(ris || input) || 0));
     } else if (value === 'M-') {
       setMemory(prev => prev - (parseFloat(ris || input) || 0));
+    } else if (value === 'UNDO') {
+        setInput((prev) => prev.slice(0, -1));
     } else {
+      if(ris) {
+        setInput(value);
+        setRis('');
+      } else {  
       setInput((prev) => prev + value);
+      }
     }
   }
 
@@ -180,6 +187,9 @@ const Calc = () => {
         <View style={styles.row}>
           <Pressable style={styles.button} onPress={() => handlePress('MS')} >
             <Text style={{ color: 'black' }}>MS</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={() => handlePress('UNDO')} >
+            <Text style={{ color: 'black' }}>UNDO</Text>
           </Pressable>
         </View>
         
